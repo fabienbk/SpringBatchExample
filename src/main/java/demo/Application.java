@@ -2,6 +2,11 @@ package demo;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -31,9 +36,11 @@ import demo.model.CorpsDeFichierParPDL;
 @ComponentScan
 @EnableAutoConfiguration
 @EnableBatchProcessing
+@MapperScan("demo")
 public class Application {
 
     public static void main(String[] args) {
+    	    	
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
                 
         /*List<Message> results = ctx.getBean(JdbcTemplate.class).query("SELECT Identifiant_Stable_PDL, Matricule_Compteur FROM message", new RowMapper<Message>() {        	
@@ -52,6 +59,19 @@ public class Application {
         */
         System.out.println();
     }
+  
+    @Bean
+    public SqlSessionFactory  sqlSessionFactory(DataSource dataSource) throws Exception {
+    	SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+    	sqlSessionFactoryBean.setDataSource(dataSource);    	
+    	return sqlSessionFactoryBean.getObject(); 
+    }
+    
+    @Bean
+    public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {    	
+		return new SqlSessionTemplate(sqlSessionFactory);    	
+    }
+
     
     @Bean
     public ItemReader<CorpsDeFichierParPDL> reader(Unmarshaller unmarshaller) {
