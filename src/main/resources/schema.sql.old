@@ -1,0 +1,5 @@
+CREATE TABLE MESSAGE (
+	ID INTEGER IDENTITY,
+	Identifiant_Stable_PDL VARCHAR (50),
+	Matricule_Compteur VARCHAR (50)
+);

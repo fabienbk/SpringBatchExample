@@ -1,0 +1,15 @@
+logging:
+    level:
+        org.springframework.web: DEBUG
+        org.springframework.batch: DEBUG
+        org.hibernate: ERROR
+
+spring:
+    datasource:
+        url: jdbc:hsqldb:file:database;shutdown=true
+        username: user
+        password: password
+        driverClassName: org.hsqldb.jdbc.JDBCDriver
+
+liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
